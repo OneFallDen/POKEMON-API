@@ -9,6 +9,12 @@ class Weaknesses(BaseModel):
     weakness: str
 
 
+class User(BaseModel):
+    id: int
+    username: str
+    password: str
+
+
 class Pokemon(BaseModel):
     id: int
     name: str
