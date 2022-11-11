@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import List
 
 class Types(BaseModel):
@@ -10,7 +10,12 @@ class Weaknesses(BaseModel):
 
 
 class User(BaseModel):
-    id: int
+    username: str
+    email: EmailStr
+    password: str
+
+
+class UserLogin(BaseModel):
     username: str
     password: str
 
