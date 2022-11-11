@@ -1,7 +1,8 @@
 from connect import connection
-import models
+from models import Pokemon, User, UserLogin
 
 
+# Get pokemon by id
 def get_by_id(id_pokemon: int, request: str):
     con = connection()
     cur = con.cursor()
@@ -22,6 +23,7 @@ def get_by_id(id_pokemon: int, request: str):
             'weaknesses': weaknesses}
 
 
+# Get pokemon by name
 def get_by_name(name: str, request: str):
     con = connection()
     cur = con.cursor()
@@ -42,7 +44,8 @@ def get_by_name(name: str, request: str):
             'weaknesses': weaknesses}
 
 
-def add_pokemon(pokemon: models.Pokemon):
+# Add new pokemon [ Create new pokemon ]
+def add_pokemon(pokemon: Pokemon):
     con = connection()
     cur = con.cursor()
     cur.execute(
@@ -56,3 +59,42 @@ def add_pokemon(pokemon: models.Pokemon):
         con.commit()
     con.close()
     return f"{pokemon.name} added successfully"
+
+
+# Check user in already registered
+def check_user_not_exist(user: User):
+    con = connection()
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM users WHERE username = '{user.username}';")
+    rows = cur.fetchall()
+    if len(rows) == 0:
+        return True
+    return False
+
+
+# Sign up user [ User registration ]
+def sign_up_user(user: User):
+    if check_user_not_exist(user):
+        return create_user(user)
+    return {"User already exist!"}
+
+
+# Add new user in DB [ Create new user ]
+def create_user(user: User):
+    con = connection()
+    cur = con.cursor()
+    cur.execute(
+        f"INSERT INTO users (username, email, password) VALUES('{user.username}','{user.email}','{user.password}');")
+    con.commit()
+    return {"User has been created!"}
+
+
+# Validate user
+def check_user(user: UserLogin):
+    con = connection()
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM users WHERE username = '{user.username}' AND password = '{user.password}';")
+    rows = cur.fetchall()
+    if len(rows) == 1:
+        return True
+    return False
