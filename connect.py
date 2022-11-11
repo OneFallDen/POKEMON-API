@@ -2,10 +2,10 @@ import psycopg2
 
 def connection():
     con = psycopg2.connect(
-        database="DB_NAME",  # DB_NAME
-        user="USER_NAME",  # USER_NAME
-        password="PASSWORD",  # PASSWORD
-        host="example.com",  # example.com
-        port="PORT"  # PORT
+        database="pokemon",  # DB_NAME
+        user="postgres",  # USER_NAME
+        password="123",  # PASSWORD
+        host="127.0.0.1",  # example.com
+        port="5432"  # PORT
     )
     return con
