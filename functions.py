@@ -1,4 +1,5 @@
 from connect import connection
+from fastapi import HTTPException
 from models import Pokemon, User, UserLogin, Favorite
 
 
@@ -58,7 +59,7 @@ def add_pokemon(pokemon: Pokemon):
         cur.execute(f"INSERT INTO weaknesses (pokemon_id, weakness) VALUES ({pokemon.id},'{weakness.weakness}');")
         con.commit()
     con.close()
-    return f"{pokemon.name} added successfully"
+    return HTTPException(status_code=201, detail='Pokemon added successfully!')
 
 
 # Check user in already registered
@@ -86,7 +87,7 @@ def create_user(user: User):
     cur.execute(
         f"INSERT INTO users (username, email, password) VALUES('{user.username}','{user.email}','{user.password}');")
     con.commit()
-    return {"User has been created!"}
+    return HTTPException(status_code=201, detail='User created successfully!')
 
 
 # Validate user
@@ -129,7 +130,7 @@ def add_pokemon_in_favs(userID: int, pokemonID: int):
     cur = con.cursor()
     cur.execute(f"INSERT INTO favorite (userid, pokemonid) VALUES({userID}, {pokemonID});")
     con.commit()
-    return {"Successfully added in favorite!"}
+    return HTTPException(status_code=200, detail="Successfully added in favorite!")
 
 
 # Delete pokemon from favorite
@@ -139,4 +140,4 @@ def delete_pokemon_from_favs(favs: Favorite):
     userID = get_user_id_by_name(favs.username)
     cur.execute(f"DELETE FROM favorite WHERE userid = {userID} AND pokemonid = {favs.pokemonID};")
     con.commit()
-    return {"Successfully deleted from favorite!"}
+    return HTTPException(status_code=200, detail="Successfully deleted from favorite!")
