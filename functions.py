@@ -1,5 +1,5 @@
 from connect import connection
-from models import Pokemon, User, UserLogin
+from models import Pokemon, User, UserLogin, Favorite
 
 
 # Get pokemon by id
@@ -98,3 +98,45 @@ def check_user(user: UserLogin):
     if len(rows) == 1:
         return True
     return False
+
+
+# Get user id by username
+def get_user_id_by_name(username: str):
+    con = connection()
+    cur = con.cursor()
+    cur.execute(f"SELECT * FROM users WHERE username = '{username}';")
+    rows = cur.fetchall()
+    for row in rows:
+        id_to_return = row[0]
+    return id_to_return
+
+
+# Get favorite pokemons by user id
+def get_favorite_by_id(userID: int):
+    con = connection()
+    cur = con.cursor()
+    cur.execute(f"SELECT pokemonid FROM favorite WHERE userid = {userID};")
+    rows = cur.fetchall()
+    pokemon_ids = []
+    for row in rows:
+        pokemon_ids.append(row[0])
+    return pokemon_ids
+
+
+# Add pokemon to user's favorite
+def add_pokemon_in_favs(userID: int, pokemonID: int):
+    con = connection()
+    cur = con.cursor()
+    cur.execute(f"INSERT INTO favorite (userid, pokemonid) VALUES({userID}, {pokemonID});")
+    con.commit()
+    return {"Successfully added in favorite!"}
+
+
+# Delete pokemon from favorite
+def delete_pokemon_from_favs(favs: Favorite):
+    con = connection()
+    cur = con.cursor()
+    userID = get_user_id_by_name(favs.username)
+    cur.execute(f"DELETE FROM favorite WHERE userid = {userID} AND pokemonid = {favs.pokemonID};")
+    con.commit()
+    return {"Successfully deleted from favorite!"}

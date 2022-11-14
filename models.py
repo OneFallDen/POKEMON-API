@@ -27,3 +27,8 @@ class Pokemon(BaseModel):
     image_url: str
     types: List[Types]
     weaknesses: List[Weaknesses]
+
+
+class Favorite(BaseModel):
+    username: str
+    pokemonID: int
