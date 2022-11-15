@@ -1,5 +1,6 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from typing import List
+
 
 class Types(BaseModel):
     type: str
@@ -9,17 +10,6 @@ class Weaknesses(BaseModel):
     weakness: str
 
 
-class User(BaseModel):
-    username: str
-    email: EmailStr
-    password: str
-
-
-class UserLogin(BaseModel):
-    username: str
-    password: str
-
-
 class Pokemon(BaseModel):
     id: int
     name: str
@@ -27,8 +17,3 @@ class Pokemon(BaseModel):
     image_url: str
     types: List[Types]
     weaknesses: List[Weaknesses]
-
-
-class Favorite(BaseModel):
-    username: str
-    pokemonID: int

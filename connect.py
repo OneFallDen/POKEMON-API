@@ -1,5 +1,6 @@
 import psycopg2
 
+
 def connection():
     con = psycopg2.connect(
         database="DB_NAME",  # DB_NAME
