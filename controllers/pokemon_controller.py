@@ -3,7 +3,7 @@ from models.pokemon_models import Pokemon
 from fastapi import HTTPException
 
 reqpok = "SELECT pokemon.id, pokemon.name,  pokemon.category, pokemon.image_url, type.type, weaknesses.weakness FROM " \
-        "pokemon JOIN type ON pokemon.id = id_pokemon  JOIN weaknesses ON pokemon.id = pokemon_id  WHERE "
+         "pokemon JOIN type ON pokemon.id = id_pokemon  JOIN weaknesses ON pokemon.id = pokemon_id  WHERE "
 
 
 # Form for get requests
@@ -79,3 +79,13 @@ def get_by_name(name: str, request: str):
             weaknesses.append(row[5])
     return {'id': id_pokemon, 'name': name, 'category': category, 'image_url': image_url, 'types': types,
             'weaknesses': weaknesses}
+
+
+def pokemon_get(att):
+    try:
+        att = int(att)
+        request = reqpok + f"id = {att}"
+        return get_by_id(att, request)
+    except:
+        request = reqpok + f"name = '{att}'"
+        return get_by_name(att, request)

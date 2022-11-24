@@ -1,13 +1,57 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+
 <head>
     <meta charset="UTF-8">
     <title>Pokemon API</title>
 </head>
+
 <body>
-    <form method="GET" action="127.0.0.1:8000/id">
-       <input type="text"><br/>
-        <input type="button" >
-    </form>
+    <header>
+        <flexbox><a href="/home">Home</a></flexbox>
+        <flexbox><a href="/favorite">Favorite</a></flexbox>
+        <flexbox><a href="/login">Login</a></flexbox>
+    </header>
+    <div id="main">
+        <form method="GET">
+            <input type="text" name="name" id="data"><br />
+            <input type="button" id="button" value="Find">
+        </form>
+    </div>
+    <flexbox id="id"></flexbox>
+    <flexbox id="name"></flexbox><br />
+    <img id="image" /><br />
+    <flexbox id="category"></flexbox><br />
+    <flexbox id="types"></flexbox><br />
+    <flexbox id="weaknesses"></flexbox><br />
 </body>
+<script type="text/javascript">
+
+    let divAnswer = document.createElement("div");
+    divAnswer.style.width = "100px";
+    divAnswer.style.height = "100px";
+    divAnswer.style.background = "grey";
+    divAnswer.style.color = "black";
+    divAnswer.innerText = "nothing...";
+    document.getElementById("main").appendChild(divAnswer);
+
+    let but = document.getElementById("button");
+    but.addEventListener("click", eventHandler)
+
+    async function eventHandler(Click) {
+        let data = document.getElementById("data");
+
+        let request = `http://127.0.0.1:8000/pokemon?att=${data.value}`;
+        let response = await fetch(request);
+        let commits = await response.json();
+
+        document.getElementById("id").innerText = commits.id;
+        document.getElementById("name").innerText = commits.name;
+        document.getElementById("image").src = commits.image_url;
+        document.getElementById("category").innerText = commits.category;
+        document.getElementById("types").innerText = commits.types;
+        document.getElementById("weaknesses").innerText = commits.weaknesses;
+    }
+</script>
+
 </html>
