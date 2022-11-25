@@ -60,8 +60,16 @@ def get_by_id(id_pokemon: int, request: str):
             types.append(row[4])
         if row[5] not in weaknesses:
             weaknesses.append(row[5])
-    return {'id': id_pokemon, 'name': name, 'category': category, 'image_url': image_url, 'types': types,
-            'weaknesses': weaknesses}
+    type_p = []
+    for type in types:
+        x = {"type": type}
+        type_p.append(x)
+    weak_p = []
+    for weak in weaknesses:
+        x = {"weakness": weak}
+        weak_p.append(x)
+    return {'id': id_pokemon, 'name': name, 'category': category, 'image_url': image_url, 'types': type_p,
+            'weaknesses': weak_p}
 
 
 # Get pokemon by name
@@ -77,15 +85,23 @@ def get_by_name(name: str, request: str):
             types.append(row[4])
         if row[5] not in weaknesses:
             weaknesses.append(row[5])
-    return {'id': id_pokemon, 'name': name, 'category': category, 'image_url': image_url, 'types': types,
-            'weaknesses': weaknesses}
+    type_p = []
+    for type in types:
+        x = {"type": type}
+        type_p.append(x)
+    weak_p = []
+    for weak in weaknesses:
+        x = {"weakness": weak}
+        weak_p.append(x)
+    return {'id': id_pokemon, 'name': name, 'category': category, 'image_url': image_url, 'types': type_p,
+            'weaknesses': weak_p}
 
 
 def pokemon_get(att):
-    try:
+    if att.isdigit():
         att = int(att)
         request = reqpok + f"id = {att}"
         return get_by_id(att, request)
-    except:
+    else:
         request = reqpok + f"name = '{att}'"
         return get_by_name(att, request)
